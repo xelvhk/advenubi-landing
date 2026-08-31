@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview --host 127.0.0.1",
     "test": "vitest",
+    "test:browser": "node scripts/browser-check.mjs",
     "typecheck": "tsc -b --pretty false"
   },
   "dependencies": {
@@ -28,6 +29,7 @@
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
     "jsdom": "^25.0.1",
+    "playwright-core": "^1.62.1",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.2",
     "vite": "^8.2.2",
