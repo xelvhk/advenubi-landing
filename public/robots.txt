@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xelvhk.github.io/advenubi-landing/sitemap.xml
