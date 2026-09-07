@@ -18,6 +18,10 @@ type Copy = {
     parents: string;
   };
   languageAction: string;
+  menuLabel: string;
+  menuOpenAction: string;
+  menuCloseAction: string;
+  mobileNavigationLabel: string;
   pilot: string;
   heroTitle: string;
   heroBody: string;
@@ -59,6 +63,10 @@ export const content: Record<Locale, Copy> = {
       parents: 'Родителям',
     },
     languageAction: 'Switch to English',
+    menuLabel: 'Меню',
+    menuOpenAction: 'Открыть меню',
+    menuCloseAction: 'Закрыть меню',
+    mobileNavigationLabel: 'Мобильная навигация',
     pilot: 'Android MVP для закрытого пилота',
     heroTitle: 'Языки начинаются с приключения',
     heroBody: 'Нуби помогает детям 4-6 лет слушать, выбирать картинки и говорить.',
@@ -156,8 +164,8 @@ export const content: Record<Locale, Copy> = {
       },
     ],
     closeTitle: 'Познакомьтесь с Нуби до публичного запуска',
-    closeBody: 'Следите за развитием MVP и инженерными решениями в открытом репозитории лендинга.',
-    closeAction: 'Открыть GitHub',
+    closeBody: 'Посмотрите исходный код, дизайн-систему и проверки публичного лендинга.',
+    closeAction: 'Посмотреть код',
     footerSummary: 'Игровая практика иностранных слов для детей 4-6 лет.',
     repository: 'Репозиторий',
     assetNotice: 'Код открыт по MIT. Права на бренд и иллюстрации сохраняются за владельцем.',
@@ -172,6 +180,10 @@ export const content: Record<Locale, Copy> = {
       parents: 'For parents',
     },
     languageAction: 'Переключить на русский',
+    menuLabel: 'Menu',
+    menuOpenAction: 'Open menu',
+    menuCloseAction: 'Close menu',
+    mobileNavigationLabel: 'Mobile navigation',
     pilot: 'Android MVP in a private pilot',
     heroTitle: 'Every language starts with an adventure',
     heroBody: 'Nubi helps children aged 4-6 listen, choose pictures, and speak.',
@@ -269,8 +281,8 @@ export const content: Record<Locale, Copy> = {
       },
     ],
     closeTitle: 'Meet Nubi before the public launch',
-    closeBody: 'Follow the MVP and its engineering decisions in the public landing repository.',
-    closeAction: 'Open GitHub',
+    closeBody: 'Explore the public landing source, design system, and quality checks.',
+    closeAction: 'View the code',
     footerSummary: 'Playful foreign-word practice for children aged 4-6.',
     repository: 'Repository',
     assetNotice: 'Code is MIT licensed. Brand and illustration rights remain with their owner.',

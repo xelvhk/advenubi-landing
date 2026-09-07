@@ -2,10 +2,10 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import '@fontsource-variable/nunito';
 import { App } from './App';
-import { localeStorageKey, resolveInitialLocale } from './lib/locale';
+import { readStoredLocale, resolveInitialLocale } from './lib/locale';
 
 const initialLocale = resolveInitialLocale(
-  window.localStorage.getItem(localeStorageKey),
+  readStoredLocale(window.localStorage),
   window.navigator.language,
 );
 

@@ -1,6 +1,6 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { content } from './content';
-import { localeStorageKey, toggleLocale, type Locale } from './lib/locale';
+import { storeLocale, toggleLocale, type Locale } from './lib/locale';
 import './styles.css';
 
 type AppProps = {
@@ -12,7 +12,7 @@ const assetUrl = (fileName: string) => `${import.meta.env.BASE_URL}assets/${file
 function BrandMark() {
   return (
     <a className="brand" href="#top">
-      <img src={assetUrl('nubi-app-icon.png')} alt="" width="40" height="40" />
+      <img src={assetUrl('nubi-app-icon.webp')} alt="" width="40" height="40" />
       <span>AdveNubi</span>
     </a>
   );
@@ -28,16 +28,39 @@ function SectionTitle({ children, id }: { children: ReactNode; id: string }) {
 
 export function App({ initialLocale }: AppProps) {
   const [locale, setLocale] = useState<Locale>(initialLocale);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const copy = content[locale];
 
   useEffect(() => {
     document.documentElement.lang = locale;
     document.title = `AdveNubi | ${copy.heroTitle}`;
-    window.localStorage.setItem(localeStorageKey, locale);
+    storeLocale(window.localStorage, locale);
   }, [copy.heroTitle, locale]);
 
+  useEffect(() => {
+    if (!isMenuOpen) {
+      return;
+    }
+
+    function closeMenuWithEscape(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    }
+
+    document.addEventListener('keydown', closeMenuWithEscape);
+    return () => document.removeEventListener('keydown', closeMenuWithEscape);
+  }, [isMenuOpen]);
+
   function changeLocale() {
+    setIsMenuOpen(false);
     setLocale((currentLocale) => toggleLocale(currentLocale));
+  }
+
+  function closeMenu() {
+    setIsMenuOpen(false);
   }
 
   return (
@@ -49,15 +72,40 @@ export function App({ initialLocale }: AppProps) {
       <header className="siteHeader">
         <div className="shell headerInner">
           <BrandMark />
-          <nav aria-label={copy.navigationLabel}>
+          <nav className="desktopNav" aria-label={copy.navigationLabel}>
             <a href="#how">{copy.nav.how}</a>
             <a href="#adventures">{copy.nav.adventures}</a>
             <a href="#safety">{copy.nav.safety}</a>
             <a href="#parents">{copy.nav.parents}</a>
           </nav>
-          <button className="localeButton" type="button" onClick={changeLocale} aria-label={copy.languageAction}>
-            {locale === 'ru' ? 'EN' : 'RU'}
-          </button>
+          <div className="headerActions">
+            <button
+              ref={menuButtonRef}
+              className="mobileMenuButton"
+              type="button"
+              aria-controls="mobile-navigation"
+              aria-expanded={isMenuOpen}
+              aria-label={isMenuOpen ? copy.menuCloseAction : copy.menuOpenAction}
+              onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
+            >
+              {copy.menuLabel}
+            </button>
+            <button className="localeButton" type="button" onClick={changeLocale} aria-label={copy.languageAction}>
+              {locale === 'ru' ? 'EN' : 'RU'}
+            </button>
+          </div>
+          {isMenuOpen && (
+            <nav
+              className="mobileNavPanel"
+              id="mobile-navigation"
+              aria-label={copy.mobileNavigationLabel}
+            >
+              <a href="#how" onClick={closeMenu}>{copy.nav.how}</a>
+              <a href="#adventures" onClick={closeMenu}>{copy.nav.adventures}</a>
+              <a href="#safety" onClick={closeMenu}>{copy.nav.safety}</a>
+              <a href="#parents" onClick={closeMenu}>{copy.nav.parents}</a>
+            </nav>
+          )}
         </div>
       </header>
 
@@ -79,10 +127,12 @@ export function App({ initialLocale }: AppProps) {
             </div>
             <div className="heroVisual">
               <img
-                src={assetUrl('hero-nubi.webp')}
+                src={assetUrl('hero-nubi-1024.webp')}
+                srcSet={`${assetUrl('hero-nubi-640.webp')} 640w, ${assetUrl('hero-nubi-1024.webp')} 1024w, ${assetUrl('hero-nubi.webp')} 1586w`}
+                sizes="(max-width: 48rem) calc(100vw - 2rem), (max-width: 64rem) 55vw, 58vw"
                 alt={copy.heroAlt}
-                width="1536"
-                height="1024"
+                width="1586"
+                height="992"
                 fetchPriority="high"
               />
             </div>
@@ -163,7 +213,7 @@ export function App({ initialLocale }: AppProps) {
             <div className="parentVisual" aria-hidden="true">
               <div className="appIconFrame">
                 <img
-                  src={assetUrl('nubi-app-icon.png')}
+                  src={assetUrl('nubi-app-icon.webp')}
                   alt=""
                   width="512"
                   height="512"

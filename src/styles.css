@@ -146,6 +146,7 @@ p {
 }
 
 .headerInner {
+  position: relative;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -171,14 +172,14 @@ p {
   border-radius: 50%;
 }
 
-nav {
+.desktopNav {
   display: flex;
   justify-content: center;
   gap: clamp(1rem, 2.5vw, 2.4rem);
   min-width: 0;
 }
 
-nav a {
+.desktopNav a {
   position: relative;
   padding-block: 0.75rem;
   color: var(--text-muted);
@@ -188,7 +189,7 @@ nav a {
   white-space: nowrap;
 }
 
-nav a::after {
+.desktopNav a::after {
   position: absolute;
   right: 0;
   bottom: 0.45rem;
@@ -202,13 +203,28 @@ nav a::after {
   transition: transform 180ms var(--ease-out);
 }
 
-nav a:hover::after,
-nav a:focus-visible::after {
+.desktopNav a:hover::after,
+.desktopNav a:focus-visible::after {
   transform: scaleX(1);
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mobileMenuButton {
+  display: none;
+}
+
+.mobileNavPanel {
+  display: none;
+}
+
 .localeButton,
-.footerLanguage {
+.footerLanguage,
+.mobileMenuButton {
   min-width: 3rem;
   min-height: 3rem;
   border: 1px solid var(--line);
@@ -225,7 +241,8 @@ nav a:focus-visible::after {
 }
 
 .localeButton:hover,
-.footerLanguage:hover {
+.footerLanguage:hover,
+.mobileMenuButton:hover {
   border-color: var(--brand);
   color: var(--brand-strong);
   background: var(--surface-soft);
@@ -233,6 +250,7 @@ nav a:focus-visible::after {
 
 .localeButton:active,
 .footerLanguage:active,
+.mobileMenuButton:active,
 .button:active {
   transform: translateY(0.08rem);
 }
@@ -595,6 +613,7 @@ nav a:focus-visible::after {
 
 .appIconFrame img {
   width: 100%;
+  height: auto;
 }
 
 .orbit {
@@ -754,52 +773,12 @@ nav a:focus-visible::after {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .heroCopy > * {
-    animation: heroEnter 650ms var(--ease-out) both;
-  }
-
-  .heroCopy > :nth-child(2) {
-    animation-delay: 70ms;
-  }
-
-  .heroCopy > :nth-child(3) {
-    animation-delay: 140ms;
-  }
-
-  .heroCopy > :nth-child(4) {
-    animation-delay: 210ms;
-  }
-
-  .heroVisual {
-    animation: visualEnter 800ms 120ms var(--ease-out) both;
-  }
-
   .appIconFrame {
     animation: gentleFloat 5s ease-in-out infinite alternate;
   }
 
-  @keyframes heroEnter {
-    from {
-      opacity: 0;
-      transform: translateY(1.25rem);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes visualEnter {
-    from {
-      opacity: 0;
-      transform: translateX(2rem) scale(0.98);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateX(0) scale(1);
-    }
+  .mobileNavPanel {
+    animation: menuEnter 180ms var(--ease-out) both;
   }
 
   @keyframes gentleFloat {
@@ -809,6 +788,18 @@ nav a:focus-visible::after {
 
     to {
       transform: translateY(0.45rem) rotate(-3deg);
+    }
+  }
+
+  @keyframes menuEnter {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 }
@@ -829,7 +820,7 @@ nav a:focus-visible::after {
     --shell: min(100% - 2.5rem, 64rem);
   }
 
-  nav a:nth-child(3) {
+  .desktopNav a:nth-child(3) {
     display: none;
   }
 
@@ -870,8 +861,49 @@ nav a:focus-visible::after {
     gap: 0.75rem;
   }
 
-  .headerInner nav {
+  .desktopNav {
     display: none;
+  }
+
+  .mobileMenuButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 4.5rem;
+    padding-inline: 1rem;
+  }
+
+  .mobileNavPanel {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    right: 0;
+    display: grid;
+    width: min(20rem, calc(100vw - 2rem));
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-surface);
+    background: var(--surface);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .mobileNavPanel a {
+    display: flex;
+    align-items: center;
+    min-height: 3.25rem;
+    padding: 0.75rem 1rem;
+    color: var(--text);
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .mobileNavPanel a + a {
+    border-top: 1px solid var(--line);
+  }
+
+  .mobileNavPanel a:hover,
+  .mobileNavPanel a:focus-visible {
+    color: var(--brand-strong);
+    background: var(--surface-soft);
   }
 
   .brand img {

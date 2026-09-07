@@ -23,10 +23,12 @@ The current MVP offers:
 
 - React 19, TypeScript, and Vite.
 - Source-derived RU and EN content with persisted locale selection.
+- Accessible mobile section navigation with Escape-key support.
+- Locale switching remains available when browser storage is blocked.
 - Responsive asymmetric layouts at 320, 768, 1024, and 1440 px.
 - System light and dark themes with reduced-motion support.
 - Semantic landmarks, skip navigation, visible focus, and 44 px targets.
-- Optimized WebP artwork and locally served variable fonts.
+- Responsive WebP artwork and locally served variable fonts.
 - Unit, component, lint, build, browser, and dependency-audit gates.
 
 ## Commands

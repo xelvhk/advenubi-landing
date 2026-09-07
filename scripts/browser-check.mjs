@@ -49,10 +49,17 @@ try {
       const root = document.documentElement;
       const heroActions = document.querySelector('.heroActions');
       const heroActionsRect = heroActions?.getBoundingClientRect();
+      const heroImage = document.querySelector('.heroVisual img');
+      const parentIcon = document.querySelector('.appIconFrame img');
+      const parentIconRect = parentIcon?.getBoundingClientRect();
       const labelledSections = Array.from(document.querySelectorAll('[aria-labelledby]'));
 
       return {
         documentLanguage: root.lang,
+        heroImageSource: heroImage instanceof HTMLImageElement ? heroImage.currentSrc : '',
+        parentIconAspectRatio: parentIconRect && parentIconRect.height > 0
+          ? parentIconRect.width / parentIconRect.height
+          : 0,
         horizontalOverflow: root.scrollWidth - root.clientWidth,
         heroActionsVisible: Boolean(
           heroActionsRect && heroActionsRect.top >= 0 && heroActionsRect.bottom <= window.innerHeight,
@@ -76,14 +83,44 @@ try {
     if (!measurements.labelledSectionsValid) {
       runtimeIssues.push('an aria-labelledby target is missing');
     }
+    if (scenario.name === 'mobile-320' && !measurements.heroImageSource.includes('hero-nubi-640.webp')) {
+      runtimeIssues.push(`mobile hero did not use responsive source: ${measurements.heroImageSource}`);
+    }
+    if (Math.abs(measurements.parentIconAspectRatio - 1) > 0.02) {
+      runtimeIssues.push(`parent icon aspect ratio is distorted: ${measurements.parentIconAspectRatio}`);
+    }
 
     await page.keyboard.press('Tab');
     const focusedClass = await page.evaluate(() => document.activeElement?.className ?? '');
     if (!String(focusedClass).includes('skipLink')) {
       runtimeIssues.push(`first keyboard focus is not the skip link: ${focusedClass}`);
     }
+    await page.locator('h1').click();
 
     if (scenario.name === 'mobile-320') {
+      const menuButton = page.getByRole('button', { name: 'Открыть меню' });
+
+      await menuButton.click();
+      const mobileNavigation = page.getByRole('navigation', { name: 'Мобильная навигация' });
+
+      await mobileNavigation.waitFor();
+      const visibleMobileLinks = await mobileNavigation.getByRole('link').all();
+      const visibleMobileLinkCount = (await Promise.all(
+        visibleMobileLinks.map((link) => link.isVisible()),
+      )).filter(Boolean).length;
+
+      if (visibleMobileLinkCount !== 4) {
+        runtimeIssues.push(`expected 4 visible mobile links, got ${visibleMobileLinkCount}`);
+      }
+
+      await mobileNavigation
+        .getByRole('link', { name: 'Приключения' })
+        .click();
+
+      if (await menuButton.getAttribute('aria-expanded') !== 'false') {
+        runtimeIssues.push('mobile navigation did not close after selecting a section');
+      }
+
       await page.getByRole('button', { name: 'Switch to English' }).click();
       await page.getByRole('heading', { name: 'Every language starts with an adventure' }).waitFor();
       const englishLanguage = await page.evaluate(() => document.documentElement.lang);
@@ -101,6 +138,7 @@ try {
       ),
     );
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    await page.locator('h1').click();
 
     const screenshotPath = `/private/tmp/advenubi-${scenario.name}.png`;
     await page.screenshot({ fullPage: true, path: screenshotPath });

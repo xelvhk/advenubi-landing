@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { App } from './App';
 import { localeStorageKey } from './lib/locale';
@@ -31,6 +31,36 @@ describe('AdveNubi landing', () => {
     expect(screen.getByRole('button', { name: 'Переключить на русский' })).toBeInTheDocument();
     expect(window.localStorage.getItem(localeStorageKey)).toBe('en');
     expect(document.documentElement.lang).toBe('en');
+  });
+
+  it('opens and closes the mobile section navigation', () => {
+    render(<App initialLocale="ru" />);
+
+    const menuButton = screen.getByRole('button', { name: 'Открыть меню' });
+
+    expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('navigation', { name: 'Мобильная навигация' })).not.toBeInTheDocument();
+
+    fireEvent.click(menuButton);
+
+    expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+    const mobileNavigation = screen.getByRole('navigation', { name: 'Мобильная навигация' });
+
+    expect(mobileNavigation).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+
+    expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+    expect(menuButton).toHaveFocus();
+
+    fireEvent.click(menuButton);
+
+    fireEvent.click(
+      within(screen.getByRole('navigation', { name: 'Мобильная навигация' }))
+        .getByRole('link', { name: 'Приключения' }),
+    );
+
+    expect(menuButton).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('connects every labelled section to an existing heading', () => {
