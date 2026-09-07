@@ -34,7 +34,14 @@ try {
     });
     page.on('pageerror', (error) => runtimeIssues.push(`page error: ${error.message}`));
     page.on('requestfailed', (request) => {
-      runtimeIssues.push(`request failed: ${request.url()} ${request.failure()?.errorText ?? ''}`);
+      const errorText = request.failure()?.errorText ?? '';
+      const isExpectedResponsiveImageAbort = errorText === 'net::ERR_ABORTED'
+        && request.resourceType() === 'image'
+        && request.url().endsWith('/assets/hero-nubi-640.webp');
+
+      if (!isExpectedResponsiveImageAbort) {
+        runtimeIssues.push(`request failed: ${request.url()} ${errorText}`);
+      }
     });
     page.on('response', (response) => {
       if (response.status() >= 400) {
