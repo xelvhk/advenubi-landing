@@ -49,6 +49,9 @@ type Copy = {
   closeAction: string;
   footerSummary: string;
   repository: string;
+  support: string;
+  privacy: string;
+  terms: string;
   assetNotice: string;
 };
 
@@ -168,6 +171,9 @@ export const content: Record<Locale, Copy> = {
     closeAction: 'Посмотреть код',
     footerSummary: 'Игровая практика иностранных слов для детей 4-6 лет.',
     repository: 'Репозиторий',
+    support: 'Поддержка',
+    privacy: 'Конфиденциальность',
+    terms: 'Условия',
     assetNotice: 'Код открыт по MIT. Права на бренд и иллюстрации сохраняются за владельцем.',
   },
   en: {
@@ -285,6 +291,9 @@ export const content: Record<Locale, Copy> = {
     closeAction: 'View the code',
     footerSummary: 'Playful foreign-word practice for children aged 4-6.',
     repository: 'Repository',
+    support: 'Support',
+    privacy: 'Privacy',
+    terms: 'Terms',
     assetNotice: 'Code is MIT licensed. Brand and illustration rights remain with their owner.',
   },
 };

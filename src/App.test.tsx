@@ -17,6 +17,14 @@ describe('AdveNubi landing', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('Android MVP для закрытого пилота')).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: /скачать/i })).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Поддержка' })).toHaveAttribute(
+      'href',
+      'mailto:advenubi@gmail.com',
+    );
+    expect(screen.getByRole('link', { name: 'Конфиденциальность' })).toHaveAttribute(
+      'href',
+      '/privacy.html',
+    );
     expect(document.documentElement.lang).toBe('ru');
   });
 

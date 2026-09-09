@@ -95,7 +95,10 @@ trust-first visual language built around the existing Nubi character.
 7. Tests, lint, type checking, production build, and browser checks pass.
 8. A public GitHub repository and GitHub Pages deployment are created.
 
-## Open Questions
+## Publication Details
 
-- Publisher identity, support email, public legal URLs, and store links remain
-  intentionally absent until verified by the owner.
+- Legal publisher: Алексей Хведченя.
+- Public developer name: AdveNubi.
+- Support: `advenubi@gmail.com`.
+- Public Privacy Policy and Terms are hosted by this GitHub Pages deployment.
+- A store link remains intentionally absent until the Android listing is live.

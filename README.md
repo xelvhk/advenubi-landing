@@ -72,6 +72,12 @@ official GitHub Pages artifact workflow.
 Expected site URL:
 `https://xelvhk.github.io/advenubi-landing/`
 
+Published support and legal endpoints:
+
+- `mailto:advenubi@gmail.com`
+- `https://xelvhk.github.io/advenubi-landing/privacy.html`
+- `https://xelvhk.github.io/advenubi-landing/terms.html`
+
 ## Licensing
 
 Source code is available under the MIT terms in [LICENSE-CODE](LICENSE-CODE).

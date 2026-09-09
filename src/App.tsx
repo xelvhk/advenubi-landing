@@ -274,6 +274,9 @@ export function App({ initialLocale }: AppProps) {
             <p>{copy.footerSummary}</p>
           </div>
           <div className="footerLinks">
+            <a href="mailto:advenubi@gmail.com">{copy.support}</a>
+            <a href={`${import.meta.env.BASE_URL}privacy.html`}>{copy.privacy}</a>
+            <a href={`${import.meta.env.BASE_URL}terms.html`}>{copy.terms}</a>
             <a href="https://github.com/xelvhk/advenubi-landing">{copy.repository}</a>
             <button className="footerLanguage" type="button" onClick={changeLocale}>
               {locale === 'ru' ? 'English' : 'Русский'}
